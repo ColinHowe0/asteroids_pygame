@@ -8,6 +8,8 @@ from shot import Shot
 def main():
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+    score_text = pygame.font.Font(size=SCORE_FONT_SIZE)
+
 
     updateable = pygame.sprite.Group()
     drawable = pygame.sprite.Group()
@@ -25,6 +27,7 @@ def main():
 
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     asteroid_field = AsteroidField()
+    score = 0
 
 
     while True:
@@ -40,10 +43,12 @@ def main():
                 quit()
             for shot in shots:
                 if asteroid.collides(shot):
+                    score += 1
                     asteroid.split()
                     shot.kill()
 
         pygame.Surface.fill(screen, (0,0,0))
+        pygame.Surface.blit(screen, score_text.render(f"SCORE: {score}", True, (0, 255, 0)), (0, 0))
         for obj in drawable:
             obj.draw(screen)
         pygame.display.flip()
